@@ -5,56 +5,79 @@
       color="primary"
       dark
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+    <v-btn @click="reset" v-if="showResult" color="green">再算一次</v-btn>
+    <v-spacer/>
+    {{ title }}
+    <v-spacer/>
+    <span>日语</span>
     </v-app-bar>
-
     <v-content>
-      <HelloWorld/>
+      <result-page v-if="showResult" :results="results"/>
+      <calc-form v-else @calc="calc"/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import CalcForm from './components/CalcForm'
+import ResultPage from './components/ResultPage'
 
 export default {
   name: 'App',
-
   components: {
-    HelloWorld,
+    CalcForm,
+    ResultPage
   },
-
-  data: () => ({
-    //
-  }),
-};
+  data() {
+    return {
+      title: '手机话费计算器',
+      showResult: false,
+      results: {
+        planName: '',
+        dataCost: '',
+        phoneCost: '',
+        currentCost: '',
+        isNoneCall: true
+      }
+    }
+  },
+  methods: {
+    /**
+     * 主要计算逻辑
+     * 控制是否显示某些要素，以及设置计算后的值
+     */
+    calc(params) {
+      this.results.planName = this.calcPlanName(params.dataPlan)
+      this.results.dataCost = this.calcDataCost(params.dataPlan)
+      this.results.phoneCost = this.calcPhoneCost(params.callTime)
+      this.results.currentCost = params.phoneCost
+      this.results.isNoneCall = params.isNoneCall
+      this.showResult = true
+    },
+    calcPlanName(data) {
+      if (data === 10) {
+        return '3G流量卡 + 无限移动wifi'
+      }
+      return data + 'G流量卡'
+    },
+    calcPhoneCost(time) {
+      return (time * 60 / 30 * 8)
+    },
+    calcDataCost(data) {
+      switch (data) {
+        case 3:
+          return 1100
+        case 5:
+          return 1100 + (2 * 1100)
+        case 7:
+          return 1100 + (4 * 1100)
+        default:
+          return 3880 * 1.1 + 1100
+      }
+    },
+    reset() {
+      this.showResult = false
+    }
+  }
+}
 </script>
