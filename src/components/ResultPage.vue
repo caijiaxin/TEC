@@ -26,26 +26,37 @@
 
         <v-progress-linear v-if="results.isNoneCall" indeterminate color="cyan"/>
 
-        <v-row>
-            <span class="font-weight-black">与现在的话费和流量费相比，每个月将节约 :</span>
-        </v-row>
-        <v-row>
-            <v-col cols="12">
-                <span class="display-2 font-weight-black">
-                    {{ results.currentCost - totalCost }}円
-                </span>
-                <v-progress-linear indeterminate color="cyan"/>
-                <!-- 有的月份不打电话 -->
-                <div v-if="results.isNoneCall">
-                    <p class="display-3">～</p>
+        <span v-if="isMerit">
+            <v-row>
+                <span class="font-weight-black">与现在的话费和流量费相比，每个月将节约 :</span>
+            </v-row>
+            <v-row>
+                <v-col cols="12">
                     <span class="display-2 font-weight-black">
-                        {{ results.currentCost - results.dataCost }}円
+                        {{ results.currentCost - totalCost }}円
                     </span>
                     <v-progress-linear indeterminate color="cyan"/>
-                </div>
-            </v-col>
-        </v-row>
-
+                    <!-- 有的月份不打电话 -->
+                    <div v-if="results.isNoneCall">
+                        <p class="display-3">～</p>
+                        <span class="display-2 font-weight-black">
+                            {{ results.currentCost - results.dataCost }}円
+                        </span>
+                        <v-progress-linear indeterminate color="cyan"/>
+                    </div>
+                </v-col>
+            </v-row>
+        </span>
+        <span v-else>
+            <v-alert
+            color="red"
+            dark
+            icon="mdi-heart"
+            transition="scale-transition"
+            >
+            恭喜你！ 你的套餐已经是最合理的了！ 快把它分享给其他的小伙伴们吧！
+            </v-alert>
+        </span>
         <!-- 节约换算 -->
         <v-alert
         v-for="item in items" :key="item.message"
@@ -65,6 +76,7 @@ export default {
     },
     computed: {
         items() {
+            if (!this.isMerit) { return }
             let items = []
             const value = this.results.currentCost - this.totalCost
             if (this.hasMilkTee(value) !== 0) {
@@ -93,6 +105,13 @@ export default {
         },
         totalCost() {
             return this.results.phoneCost + this.results.dataCost
+        },
+        isMerit() {
+            const result = this.results.currentCost - (this.results.phoneCost + this.results.dataCost)
+            if (result >= 0) {
+                return true
+            }
+            return false
         }
     },
     methods: {
