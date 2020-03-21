@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-row>
-            <span class="font-weight-black">{{ $t('userSmartalk') }} + {{ results.planName }} + {{ $t('afterUserSmartalk') }}<br>
+            <span class="font-weight-black">{{ $t('userSmartalk') }} + {{ results.planName + $t('afterUserSmartalk') }}<br>
             {{ $t('smartalkResult') }}</span>
         </v-row>
         <v-row>
@@ -60,17 +60,19 @@
             {{ $t('congratulations') }}
             </v-alert>
         </span>
-        <!-- 节约换算 -->
-        <p class="font-weight-black headline">{{ $t('exchange') }}</p>
-        <v-alert
-        v-for="item in items" :key="item.message"
-        color="green"
-        dark
-        :icon="item.icon"
-        transition="scale-transition"
-        >
-        {{ item.message }}
-        </v-alert>
+        <span v-if="isMerit">
+            <!-- 节约换算 -->
+            <p class="font-weight-black headline">{{ $t('exchange') }}</p>
+            <v-alert
+            v-for="item in items" :key="item.message"
+            color="green"
+            dark
+            :icon="item.icon"
+            transition="scale-transition"
+            >
+            {{ item.message }}
+            </v-alert>
+        </span>
     </v-container>
 </template>
 <script>
