@@ -1,7 +1,8 @@
 <template>
     <v-container>
         <v-row>
-            <span class="font-weight-black">使用Smartalk + {{ results.planName }}的话，<br>每个月的话费 + 流量费用约为 :</span>
+            <span class="font-weight-black">{{ $t('userSmartalk') }} + {{ results.planName }} + {{ $t('afterUserSmartalk') }}<br>
+            {{ $t('smartalkResult') }}</span>
         </v-row>
         <v-row>
             <v-spacer/>
@@ -14,7 +15,7 @@
 
         <!-- 有的月份不打电话 -->
         <v-row v-if="results.isNoneCall">
-            <span class="font-weight-black">若当月不打电话，每个月的话费 + 流量费用则约为 :</span>
+            <span class="font-weight-black">{{ $t('noPhoneCost') }}</span>
         </v-row>
         <v-row v-if="results.isNoneCall">
             <v-spacer/>
@@ -28,7 +29,7 @@
 
         <span v-if="isMerit">
             <v-row>
-                <span class="font-weight-black">与现在的话费和流量费相比，每个月将节约 :</span>
+                <span class="font-weight-black">{{ $t('saveCost') }}</span>
             </v-row>
             <v-row>
                 <v-col cols="12">
@@ -54,7 +55,7 @@
             icon="mdi-heart"
             transition="scale-transition"
             >
-            恭喜你！ 你的套餐已经是最合理的了！ 快把它分享给其他的小伙伴们吧！
+            {{ $t('congratulations') }}
             </v-alert>
         </span>
         <!-- 节约换算 -->
@@ -79,8 +80,8 @@ export default {
             if (!this.isMerit) { return }
             let items = []
             const value = this.results.currentCost - this.totalCost
-            if (this.hasMilkTee(value) !== 0) {
-                items.push(this.hasMilkTee(value))
+            if (this.hasMilkTea(value) !== 0) {
+                items.push(this.hasMilkTea(value))
             }
             if (this.hasFastFoods(value) !== 0) {
                 items.push(this.hasFastFoods(value))
@@ -97,7 +98,7 @@ export default {
             if (items.length === 0) {
                 const nonsense = {
                     icon: 'mdi-clock',
-                    message: '积少成多！ 再接再厉！'
+                    message: this.$t('accumulative')
                 }
                 items.push(nonsense)
             }
@@ -115,13 +116,13 @@ export default {
         }
     },
     methods: {
-        hasMilkTee(value) {
+        hasMilkTea(value) {
             if (value < 600) {
                 return 0
             }
             const result = {
                 icon: 'mdi-cup',
-                message: 'タピオカ約' + Math.ceil(value / 600) + '杯'
+                message: this.$t('milkTea') + Math.ceil(value / 600) + '杯'
             }
             return result
         },
@@ -131,7 +132,7 @@ export default {
             }
             const result = {
                 icon: 'mdi-food',
-                message: '外食約' + Math.ceil(value / 900) + '回'
+                message: this.$t('food') + Math.ceil(value / 900) + this.$t('times')
             }
             return result
         },
@@ -141,7 +142,7 @@ export default {
             }
             const result = {
                 icon: 'mdi-microphone',
-                message: 'カラオケ約' + Math.ceil(value / 1000) + '回'
+                message: this.$t('karaok') + Math.ceil(value / 1000) + this.$t('times')
             }
             return result
         },
@@ -151,7 +152,7 @@ export default {
             }
             const result = {
                 icon: 'mdi-movie',
-                message: '映画約' + Math.ceil(value / 1800) + '回'
+                message: this.$t('movie') + Math.ceil(value / 1800) + this.$t('times')
             }
             return result
         },
@@ -161,7 +162,7 @@ export default {
             }
             const result = {
                 icon: 'mdi-beer',
-                message: '飲み会約' + Math.ceil(value / 2000) + '回'
+                message: this.$t('beer') + Math.ceil(value / 2000) + this.$t('times')
             }
             return result
         }

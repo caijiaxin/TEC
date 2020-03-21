@@ -5,11 +5,11 @@
       color="primary"
       dark
     >
-    <v-btn @click="reset" v-if="showResult" color="green">再算一次</v-btn>
+    <v-btn @click="reset" v-if="showResult" color="green">{{ $t('resetBtn') }}</v-btn>
     <v-spacer/>
-    {{ title }}
+    {{ $t('title') }}
     <v-spacer/>
-    <span>日语</span>
+    <v-btn @click="changeLocal" color="pink"><v-icon left>mdi-earth</v-icon>{{ $t('changeLocal') }}</v-btn>
     </v-app-bar>
     <v-content>
       <result-page v-if="showResult" :results="results"/>
@@ -30,7 +30,6 @@ export default {
   },
   data() {
     return {
-      title: '手机话费计算器',
       showResult: false,
       results: {
         planName: '',
@@ -56,15 +55,18 @@ export default {
     },
     calcPlanName(data) {
       if (data > 20) {
-        return '可接收短信的100M流量卡 + 移动wifi'
+        return this.$t('leastPlan')
       }
-      return data + 'G流量卡'
+      return data + 'G' + this.$t('dataSIM')
     },
     calcPhoneCost(time) {
       return (time * 60 / 30 * 8)
     },
     reset() {
       this.showResult = false
+    },
+    changeLocal() {
+      this.$i18n.locale = this.$i18n.locale === 'en' ? 'ja' : 'en'
     }
   }
 }

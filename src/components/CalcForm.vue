@@ -1,67 +1,67 @@
 <template>
     <v-container>
          <v-alert type="error" v-if="showAlert">
-            请输入完整信息以便计算
+            {{ $t("required") }}
         </v-alert>
         <!-- 流量 -->
         <v-row>
-            <label>每月使用流量</label>
+            <label>{{ $t('dataPlan') }}</label>
         </v-row>
         <v-row>
-            <v-col cols="7">
+            <v-col cols="11">
                 <v-select
                 v-model="selectedPlan"
                 :items="plans"
-                placeholder="请选择每月使用流量"
+                :placeholder="$t('dataPlan')"
                 ></v-select>
             </v-col>
         </v-row>
         <!-- 通话时长 -->
         <v-row>
-            <label>每月通话时长</label>
+            <label>{{ $t('callTime') }}</label>
         </v-row>
         <v-row>
-            <v-col cols="7">
-                <v-text-field type="number" placeholder="请输入每月通话时长" v-model="callTime"/>
+            <v-col cols="9">
+                <v-text-field type="number" :placeholder="$t('callTime')" v-model="callTime"/>
             </v-col>
-            <v-col>
+            <v-col cols="2">
                 <span class="display-2 font-weight-black">min</span>
             </v-col>
         </v-row>
         <!-- 是否有一通电话都不打的月份 -->
         <v-row>
-            <label>每月电话使用情况</label>
+            <label>{{ $t('frequency') }}</label>
         </v-row>
         <v-row>
             <v-radio-group v-model="isNoneCall" row>
-                <v-radio label="有的时候一个月都不打一通电话" value="1"></v-radio>
-                <v-radio label="每个月或多或少都会打电话" value="0"></v-radio>
+                <v-radio :label="$t('hasNever')" value="1"></v-radio>
+                <v-radio :label="$t('always')" value="0"></v-radio>
             </v-radio-group>
         </v-row>
         <!-- 是否有移动wifi -->
         <v-row>
-            <v-col cols="7">
-                <v-checkbox v-model="hasPoketWifi" label="是否有移动wifi?"></v-checkbox>
+            <v-col cols="11">
+                <v-checkbox v-model="hasPoketWifi" :label="$t('hasPoketWifi')"></v-checkbox>
             </v-col>
-            <v-col cols="8" v-if="hasPoketWifi">
-                <v-text-field type="number" placeholder="请输入每月移动wifi的价格" v-model="poketWifiCost"/>
+            <v-col cols="11" v-if="hasPoketWifi">
+                <v-text-field type="number" :placeholder="$t('poketWifiCost')" v-model="poketWifiCost"/>
             </v-col>
         </v-row>
         <!-- 现在每个月的话费 -->
         <v-row>
-            <label>现在每月的话费</label>
+            <label>{{ $t('currentCost')}} </label>
         </v-row>
         <v-row>
-            <v-col cols="7">
-                <v-text-field type="number" placeholder="请输入现在每月的话费" v-model="phoneCost"/>
+            <v-col cols="9">
+                <v-text-field type="number" :placeholder="$t('inputCurrentCostPlz')" v-model="phoneCost"/>
             </v-col>
-            <v-col>
+            <v-col cols="2">
                 <span class="display-2 font-weight-black">円</span>
             </v-col>
         </v-row>
         <v-row>
             <v-spacer />
-            <v-btn @click="sendParams" large>计算</v-btn>
+            <v-btn @click="sendParams" large>{{ $t('calc') }}</v-btn>
             <v-spacer />
         </v-row>
     </v-container>
