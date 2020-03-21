@@ -98,7 +98,7 @@ export default {
                 'callTime': this.callTime === '' ? 0 : this.callTime,
                 'phoneCost': Number(this.phoneCost),
                 'isNoneCall': this.isNoneCall === '1' ? true : false,
-                'poketWifiCost': this.hasPoketWifi ? this.poketWifiCost : 0
+                'poketWifiCost': this.hasPoketWifi ? Number(this.poketWifiCost) : 0
             }
             this.$emit('calc', resultList)
         },
