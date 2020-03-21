@@ -10,7 +10,7 @@
   "frequency": "每月电话使用情况",
   "hasNever": "有的时候一个月都不打一通电话",
   "always": "每个月或多或少都会打电话",
-  "hasPoketWifi": "是否有移动wifi?",
+  "hasPoketWifi": "如果有移动wifi请打勾",
   "poketWifiCost": "请输入每月移动wifi的价格",
   "currentCost": "现在每月的话费",
   "inputCurrentCostPlz": "请输入现在每月的话费",
@@ -27,5 +27,6 @@
   "karaok": "卡拉OK唱歌",
   "movie": "看电影",
   "beer": "跟朋友喝酒",
-  "times": "次"
+  "times": "次",
+  "exchange": "省下来的钱相当于 :"
 }

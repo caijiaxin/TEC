@@ -13,20 +13,22 @@
         </v-row>
         <v-progress-linear indeterminate color="cyan"/>
 
-        <!-- 有的月份不打电话 -->
-        <v-row v-if="results.isNoneCall">
-            <span class="font-weight-black">{{ $t('noPhoneCost') }}</span>
-        </v-row>
-        <v-row v-if="results.isNoneCall">
-            <v-spacer/>
-            <span class="display-2 font-weight-black">
-                {{ results.dataCost }}円
-            </span>
-            <v-spacer/>
-        </v-row>
+        <!-- 若当月不打电话 -->
+        <span v-if="results.isNoneCall">
+            <v-row>
+                <span class="font-weight-black">{{ $t('noPhoneCost') }}</span>
+            </v-row>
+            <v-row>
+                <v-spacer/>
+                <span class="display-2 font-weight-black">
+                    {{ results.dataCost }}円
+                </span>
+                <v-spacer/>
+            </v-row>
 
-        <v-progress-linear v-if="results.isNoneCall" indeterminate color="cyan"/>
-
+            <v-progress-linear indeterminate color="cyan"/>
+        </span>
+        <!-- 与现在的相比 -->
         <span v-if="isMerit">
             <v-row>
                 <span class="font-weight-black">{{ $t('saveCost') }}</span>
@@ -59,6 +61,7 @@
             </v-alert>
         </span>
         <!-- 节约换算 -->
+        <p class="font-weight-black headline">{{ $t('exchange') }}</p>
         <v-alert
         v-for="item in items" :key="item.message"
         color="green"
@@ -79,7 +82,7 @@ export default {
         items() {
             if (!this.isMerit) { return }
             let items = []
-            const value = this.results.currentCost - this.totalCost
+            const value = this.results.isNoneCall ? this.results.currentCost - this.results.dataCost : this.results.currentCost - this.totalCost
             if (this.hasMilkTea(value) !== 0) {
                 items.push(this.hasMilkTea(value))
             }
@@ -108,8 +111,22 @@ export default {
             return this.results.phoneCost + this.results.dataCost
         },
         isMerit() {
-            const result = this.results.currentCost - (this.results.phoneCost + this.results.dataCost)
+            let result = this.results.currentCost - (this.results.phoneCost + this.results.dataCost)
+            if (result < 0) {
+                if (this.results.isNoneCall) {
+                    result = this.results.currentCost - this.results.dataCost >= 0 ? this.results.currentCost - this.results.dataCost : result
+                }
+            }
             if (result >= 0) {
+                return true
+            }
+            return false
+        },
+        /**
+         * 不打电话时有更划算 && 有不打电话的情况
+         */
+        showExchange() {
+            if (this.results.currentCost - this.results.dataCost >= 0 && this.results.isNoneCall) {
                 return true
             }
             return false
@@ -122,7 +139,7 @@ export default {
             }
             const result = {
                 icon: 'mdi-cup',
-                message: this.$t('milkTea') + Math.ceil(value / 600) + '杯'
+                message: this.$t('milkTea') + '約'  + Math.ceil(value / 600) + '杯'
             }
             return result
         },
@@ -132,7 +149,7 @@ export default {
             }
             const result = {
                 icon: 'mdi-food',
-                message: this.$t('food') + Math.ceil(value / 900) + this.$t('times')
+                message: this.$t('food') + '約' + Math.ceil(value / 900) + this.$t('times')
             }
             return result
         },
@@ -142,7 +159,7 @@ export default {
             }
             const result = {
                 icon: 'mdi-microphone',
-                message: this.$t('karaok') + Math.ceil(value / 1000) + this.$t('times')
+                message: this.$t('karaok') + '約'  + Math.ceil(value / 1000) + this.$t('times')
             }
             return result
         },
@@ -152,7 +169,7 @@ export default {
             }
             const result = {
                 icon: 'mdi-movie',
-                message: this.$t('movie') + Math.ceil(value / 1800) + this.$t('times')
+                message: this.$t('movie') + '約'  + Math.ceil(value / 1800) + this.$t('times')
             }
             return result
         },
@@ -162,7 +179,7 @@ export default {
             }
             const result = {
                 icon: 'mdi-beer',
-                message: this.$t('beer') + Math.ceil(value / 2000) + this.$t('times')
+                message: this.$t('beer') + '約'  + Math.ceil(value / 2000) + this.$t('times')
             }
             return result
         }

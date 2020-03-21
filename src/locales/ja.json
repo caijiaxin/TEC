@@ -10,7 +10,7 @@
   "frequency": "毎月電話通話の使用頻度はどんな感じですか？",
   "hasNever": "１ヶ月中全く電話をかけなかったこともある",
   "always": "毎月必ず誰かに電話をかける",
-  "hasPoketWifi": "ポケットWifiを利用していますか？",
+  "hasPoketWifi": "ポケットWifiを利用している方はチェックしてください",
   "poketWifiCost": "ポケットWifiの月額を入力してください",
   "currentCost": "現在毎月のスマホ代はいくらですか？",
   "inputCurrentCostPlz": "毎月のスマホ代を入力してください",
@@ -27,5 +27,6 @@
   "karaok": "カラオケ",
   "movie": "映画館",
   "beer": "飲み会",
-  "times": "回"
+  "times": "回",
+  "exchange": "節約したお金は以下のものに値する :"
 }
