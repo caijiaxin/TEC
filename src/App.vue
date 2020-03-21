@@ -11,7 +11,7 @@
     <v-spacer/>
     <span>日语</span>
     </v-app-bar>
-    <v-content ref="content">
+    <v-content>
       <result-page v-if="showResult" :results="results"/>
       <calc-form v-else @calc="calc"/>
     </v-content>
@@ -53,8 +53,6 @@ export default {
       this.results.currentCost = params.phoneCost + params.poketWifiCost
       this.results.isNoneCall = params.isNoneCall
       this.showResult = true
-      // scroll to top
-      this.$refs.content.scrollTop = 0
     },
     calcPlanName(data) {
       if (data > 20) {
