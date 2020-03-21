@@ -38,6 +38,15 @@
                 <v-radio label="每个月或多或少都会打电话" value="0"></v-radio>
             </v-radio-group>
         </v-row>
+        <!-- 是否有移动wifi -->
+        <v-row>
+            <v-col cols="7">
+                <v-checkbox v-model="hasPoketWifi" label="是否有移动wifi?"></v-checkbox>
+            </v-col>
+            <v-col cols="8" v-if="hasPoketWifi">
+                <v-text-field type="number" placeholder="请输入每月移动wifi的价格" v-model="poketWifiCost"/>
+            </v-col>
+        </v-row>
         <!-- 现在每个月的话费 -->
         <v-row>
             <label>现在每月的话费</label>
@@ -67,6 +76,8 @@ export default {
             callTime: '',
             phoneCost: '',
             isNoneCall: '1',
+            hasPoketWifi: false,
+            poketWifiCost: '',
             plans: Data.dataPlans, // 流量套餐在 constData.js 里统一管理
             showAlert: false
         }
@@ -81,11 +92,13 @@ export default {
                 this.showAlert = true
                 return
             }
+            this.setPlan()
             const resultList = {
                 'dataPlan': this.selectedPlan,
                 'callTime': this.callTime === '' ? 0 : this.callTime,
-                'phoneCost': this.phoneCost,
-                'isNoneCall': this.isNoneCall === '1' ? true : false
+                'phoneCost': Number(this.phoneCost),
+                'isNoneCall': this.isNoneCall === '1' ? true : false,
+                'poketWifiCost': this.hasPoketWifi ? this.poketWifiCost : 0
             }
             this.$emit('calc', resultList)
         },
@@ -96,7 +109,19 @@ export default {
             let hasValue = true
             if(!this.selectedPlan) { hasValue = false }
             if(!this.phoneCost) { hasValue = false }
+            if(this.hasPoketWifi && !this.poketWifiCost) { hasValue = false }
             return hasValue
+        },
+        /**
+         * 逆向查找流量套餐对象
+         */
+        setPlan() {
+            this.plans.some((plan) => {
+                if (plan.value === this.selectedPlan) {
+                    this.selectedPlan = plan
+                    return true
+                }
+            })
         }
     },
 }

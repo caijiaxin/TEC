@@ -1,12 +1,12 @@
 <template>
     <v-container>
         <v-row>
-            <span class="font-weight-black">使用Smartalk + {{ results.planName }}的话，<br>每个月的话费约为 :</span>
+            <span class="font-weight-black">使用Smartalk + {{ results.planName }}的话，<br>每个月的话费 + 流量费用约为 :</span>
         </v-row>
         <v-row>
             <v-spacer/>
             <span class="display-2 font-weight-black">
-                {{ results.dataCost + results.phoneCost }}円
+                {{ totalCost }}円
             </span>
             <v-spacer/>
         </v-row>
@@ -15,7 +15,7 @@
 
         <!-- 有的月份不打电话 -->
         <v-row v-if="results.isNoneCall">
-            <span class="font-weight-black">若当月不打电话，话费则为 :</span>
+            <span class="font-weight-black">若当月不打电话，每个月的话费 + 流量费用则约为 :</span>
         </v-row>
         <v-row v-if="results.isNoneCall">
             <v-spacer/>
@@ -28,34 +28,23 @@
         <v-progress-linear v-if="results.isNoneCall" indeterminate color="cyan"/>
 
         <v-row>
-            <span class="font-weight-black">与现在的话费相比，每个月将节约 :</span>
+            <span class="font-weight-black">与现在的话费和流量费相比，每个月将节约 :</span>
         </v-row>
         <v-row>
-            <v-spacer/>
-            <v-col v-if="!results.isNoneCall">
+            <v-col cols="12">
                 <span class="display-2 font-weight-black">
-                {{ results.currentCost - (results.dataCost + results.phoneCost) }}円
+                    {{ results.currentCost - totalCost }}円
                 </span>
-            </v-col>
-            <v-progress-linear v-if="!results.isNoneCall" indeterminate color="cyan"/>
-
-            <!-- 有的月份不打电话 -->
-            <v-col v-if="results.isNoneCall" cols="12">
-                <span class="display-2 font-weight-black">
-                    {{ results.currentCost - (results.dataCost + results.phoneCost) }}円
-                </span>
-
                 <v-progress-linear indeterminate color="cyan"/>
-
-                <p class="display-3">～</p>
-
-                <span class="display-2 font-weight-black">
-                    {{ results.currentCost - results.dataCost }}円
-                </span>
-
-                <v-progress-linear indeterminate color="cyan"/>
+                <!-- 有的月份不打电话 -->
+                <div v-if="results.isNoneCall">
+                    <p class="display-3">～</p>
+                    <span class="display-2 font-weight-black">
+                        {{ results.currentCost - results.dataCost }}円
+                    </span>
+                    <v-progress-linear indeterminate color="cyan"/>
+                </div>
             </v-col>
-            <v-spacer/>
         </v-row>
 
         <!-- 节约换算 -->
@@ -74,14 +63,6 @@
 export default {
     props:{
         results: Object
-    },
-    data() {
-        return {
-            // items: [
-            //     {icon: 'mdi-food', message: '换算换算换算换算换算换算换算换算'},
-            //     {icon: 'mdi-beer', message: '啤酒啤酒啤酒啤酒啤酒啤酒啤酒啤酒啤酒啤酒'}
-            // ]
-        }
     },
     computed: {
         items() {
@@ -103,6 +84,9 @@ export default {
                 items.push(this.hasBeer(value))
             }
             return items
+        },
+        totalCost() {
+            return this.results.phoneCost + this.results.dataCost
         }
     },
     methods: {
