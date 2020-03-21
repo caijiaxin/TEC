@@ -12,7 +12,6 @@
         </v-row>
         <v-progress-linear indeterminate color="cyan"/>
 
-
         <!-- 有的月份不打电话 -->
         <v-row v-if="results.isNoneCall">
             <span class="font-weight-black">若当月不打电话，每个月的话费 + 流量费用则约为 :</span>
@@ -67,7 +66,7 @@ export default {
     computed: {
         items() {
             let items = []
-            const value = this.results.currentCost - (this.results.dataCost + this.results.phoneCost)
+            const value = this.results.currentCost - this.totalCost
             if (this.hasMilkTee(value) !== 0) {
                 items.push(this.hasMilkTee(value))
             }
@@ -82,6 +81,13 @@ export default {
             }
             if (this.hasBeer(value) !== 0) {
                 items.push(this.hasBeer(value))
+            }
+            if (items.length === 0) {
+                const nonsense = {
+                    icon: 'mdi-clock',
+                    message: '积少成多！ 再接再厉！'
+                }
+                items.push(nonsense)
             }
             return items
         },
