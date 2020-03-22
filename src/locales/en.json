@@ -28,5 +28,7 @@
   "movie": "看电影",
   "beer": "跟朋友喝酒",
   "times": "次",
-  "exchange": "省下来的钱相当于 :"
+  "exchange": "省下来的钱相当于 :",
+  "checkBlog": "想了解更多,请参考的博客！",
+  "blogUrl": "https://caijiaxin.github.io/2020/03/22/%E8%AF%A5%E4%B8%8D%E4%BC%9A%E8%BF%98%E6%9C%89%E4%BA%BA%E5%9C%A8%E7%94%A8%E4%B8%89%E5%A4%A7%E8%BF%90%E8%90%A5%E5%95%86%E5%90%A7/"
 }

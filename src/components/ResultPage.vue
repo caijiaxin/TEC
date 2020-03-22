@@ -72,6 +72,7 @@
             >
             {{ item.message }}
             </v-alert>
+            <a :href="$t('blogUrl')" target="blank">{{ $t('checkBlog') }}</a>
         </span>
     </v-container>
 </template>

@@ -61,7 +61,7 @@
         </v-row>
         <v-row>
             <v-spacer />
-            <v-btn @click="sendParams" large>{{ $t('calc') }}</v-btn>
+            <v-btn @click="sendParams" large color="primary">{{ $t('calc') }}</v-btn>
             <v-spacer />
         </v-row>
     </v-container>
